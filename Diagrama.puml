@@ -1,0 +1,35 @@
+@startuml
+
+title Diagrama de flujo - Sistema de Gestión de Eventos
+
+start
+
+:Organizador accede al sistema;
+:Organizador crea o lista eventos;
+if (Evento existente?) then (Sí)
+    :Mostrar detalles del evento;
+else (No)
+    :Crear nuevo evento;
+endif
+
+:Guardar evento en la base de datos;
+
+:Participante accede al sistema;
+:Participante selecciona un evento;
+
+if (Espacios disponibles?) then (Sí)
+    :Participante rellena el formulario de inscripción;
+    :Guardar inscripción en la base de datos;
+    :Generar entrada con código único;
+    :Enviar correo de confirmación (asíncrono);
+else (No)
+    :Mostrar mensaje de "Evento completo";
+endif
+
+:Organizador solicita informe de inscripciones;
+:Generar informe con datos de participantes;
+:Enviar informe al organizador (asíncrono);
+
+stop
+
+@enduml
