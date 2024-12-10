@@ -19,23 +19,11 @@ namespace SistemaEventosAPI.Controllers
         [HttpPost]
         public IActionResult RegisterParticipante([FromBody] Participante participante)
         {
-            // Verifica que el evento exista
-            var evento = _context.Eventos.Find(participante.EventoId);
-            if (evento == null)
-            {
-                return BadRequest(new { error = "El evento no existe." });
-            }
-            // Registra al participante
             _context.Participantes.Add(participante);
             _context.SaveChanges();
-
-            // Incluye el evento en la respuesta
-            var participanteConEvento = _context.Participantes
-                .Include(p => p.Evento)
-                .FirstOrDefault(p => p.Id == participante.Id);
-
-            return Ok(participanteConEvento);
+            return Ok(participante);
         }
+
 
         [HttpGet("evento/{eventoId}")]
         public IActionResult GetParticipantesByEvento(int eventoId)
@@ -43,6 +31,7 @@ namespace SistemaEventosAPI.Controllers
             var participantes = _context.Participantes.Where(p => p.EventoId == eventoId).ToList();
             return Ok(participantes);
         }
+
 
         [HttpDelete("{id}")]
         public IActionResult DeleteParticipante(int id)
