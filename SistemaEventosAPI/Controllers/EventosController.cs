@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using SistemaEventosAPI.Data;
 using SistemaEventosAPI.Models;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace SistemaEventosAPI.Controllers
 {
@@ -17,43 +19,40 @@ namespace SistemaEventosAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetEventos()
+        public async Task<IActionResult> GetEventos()
         {
-            var eventos = _context.Eventos.Include(e => e.Participantes).ToList();
+            var eventos = await _context.Eventos.Include(e => e.Participantes).ToListAsync();
             return Ok(eventos);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetEventoById(int id)
+        public async Task<IActionResult> GetEventoById(int id)
         {
-            var evento = _context.Eventos.Include(e => e.Participantes).FirstOrDefault(e => e.Id == id);
+            var evento = await _context.Eventos.Include(e => e.Participantes).FirstOrDefaultAsync(e => e.Id == id);
             if (evento == null)
                 return NotFound();
 
             return Ok(evento);
         }
 
-
         [HttpPost]
-        public IActionResult CreateEvento(Evento evento)
+        public async Task<IActionResult> CreateEvento(Evento evento)
         {
-            _context.Eventos.Add(evento);
-            _context.SaveChanges();
+            await _context.Eventos.AddAsync(evento);
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetEventos), new { id = evento.Id }, evento);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteEvento(int id)
+        public async Task<IActionResult> DeleteEvento(int id)
         {
-            var evento = _context.Eventos.Find(id);
+            var evento = await _context.Eventos.FindAsync(id);
             if (evento == null)
                 return NotFound();
 
             _context.Eventos.Remove(evento);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return NoContent();
         }
-
-
     }
 }

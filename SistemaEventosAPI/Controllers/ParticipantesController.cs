@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using SistemaEventosAPI.Data;
 using SistemaEventosAPI.Models;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace SistemaEventosAPI.Controllers
 {
@@ -17,34 +19,30 @@ namespace SistemaEventosAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult RegisterParticipante([FromBody] Participante participante)
+        public async Task<IActionResult> RegisterParticipante([FromBody] Participante participante)
         {
-            _context.Participantes.Add(participante);
-            _context.SaveChanges();
+            await _context.Participantes.AddAsync(participante);
+            await _context.SaveChangesAsync();
             return Ok(participante);
         }
 
-
         [HttpGet("evento/{eventoId}")]
-        public IActionResult GetParticipantesByEvento(int eventoId)
+        public async Task<IActionResult> GetParticipantesByEvento(int eventoId)
         {
-            var participantes = _context.Participantes.Where(p => p.EventoId == eventoId).ToList();
+            var participantes = await _context.Participantes.Where(p => p.EventoId == eventoId).ToListAsync();
             return Ok(participantes);
         }
 
-
         [HttpDelete("{id}")]
-        public IActionResult DeleteParticipante(int id)
+        public async Task<IActionResult> DeleteParticipante(int id)
         {
-            var participante = _context.Participantes.Find(id);
+            var participante = await _context.Participantes.FindAsync(id);
             if (participante == null)
                 return NotFound();
 
             _context.Participantes.Remove(participante);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return NoContent();
         }
-
-
     }
 }
