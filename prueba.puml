@@ -1,0 +1,50 @@
+@startuml
+
+package "Sistema de Gestión de Eventos" {
+
+  package Controllers {
+    class "EventosController" {
+      + GetEventos()
+      + GetEventoById(id)
+      + CreateEvento(evento)
+      + DeleteEvento(id)
+    }
+
+    class "ParticipantesController" {
+      + RegisterParticipante(participante)
+      + GetParticipantesByEvento(eventoId)
+      + DeleteParticipante(id)
+    }
+  }
+
+  package Models {
+    class "Evento" {
+      + Id
+      + Nombre
+      + Fecha
+      + Ubicacion
+      + Participantes: List<Participante>
+    }
+
+    class "Participante" {
+      + Id
+      + Nombre
+      + Correo
+      + EventoId
+    }
+  }
+
+  package Data {
+    class "EventosDbContext" {
+      + DbSet<Evento> Eventos
+      + DbSet<Participante> Participantes
+    }
+  }
+
+  Controllers --> Data
+  Controllers --> Models
+  Data --> Models
+
+}
+
+@enduml
