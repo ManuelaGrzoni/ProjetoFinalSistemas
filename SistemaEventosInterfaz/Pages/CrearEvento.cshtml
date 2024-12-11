@@ -1,0 +1,20 @@
+﻿<form method="post">
+    <div>
+        <label for="Nombre">Nombre:</label>
+        <input id="Nombre" name="Nombre" value="@Model.Evento.Nombre" />
+    </div>
+    <div>
+        <label for="Fecha">Fecha:</label>
+        <input id="Fecha" name="Fecha" type="date" value="@Model.Evento.Fecha.ToString("yyyy-MM-dd")" />
+    </div>
+    <div>
+        <label for="Ubicacion">Ubicación:</label>
+        <input id="Ubicacion" name="Ubicacion" value="@Model.Evento.Ubicacion" />
+    </div>
+    <button type="submit">Crear Evento</button>
+</form>
+
+@if (Model.Message != null)
+{
+    <p>@Model.Message</p>
+}

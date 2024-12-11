@@ -1,0 +1,33 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<h1>Bienvenido al Sistema de Gestión de Eventos</h1>
+
+<h2>Lista de Eventos</h2>
+
+@if (Model.Eventos == null || !Model.Eventos.Any())
+{
+    <p>No hay eventos disponibles en este momento.</p>
+}
+else
+{
+    <ul>
+        @foreach (var evento in Model.Eventos)
+        {
+            <li>
+                <strong>@evento.Nombre</strong> - @evento.Fecha.ToString("dd/MM/yyyy") <br />
+                Ubicación: @evento.Ubicacion <br />
+                Capacidad: @evento.Capacidad <br />
+                Participantes: @evento.Participantes.Count
+            </li>
+        }
+    </ul>
+}
+
+<div style="margin-top: 20px;">
+    <a href="/Eventos" class="btn btn-primary" style="margin-right: 10px;">Participar de un Evento</a>
+    <a href="/CrearEvento" class="btn btn-secondary">Crear un Evento</a>
+</div>
